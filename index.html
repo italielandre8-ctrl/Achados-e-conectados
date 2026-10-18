@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173c32">
+  <title>Achados e Conectados</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="brand" id="homeButton" aria-label="Voltar ao início">
+      <span class="brand-mark">AC</span>
+      <span><strong>Achados e Conectados</strong><small>Achou? Vamos conectar ao dono.</small></span>
+    </button>
+    <button class="text-button hidden" id="backButton">← Início</button>
+  </header>
+
+  <main class="container">
+    <section id="homeView" class="view">
+      <div class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">SISTEMA DE ACHADOS E PERDIDOS</span>
+          <h1>Achou ou perdeu algo?<br><span>Vamos conectar.</span></h1>
+          <p>Registre objetos encontrados e procure itens perdidos. Juntos, podemos fazer cada coisa voltar ao seu dono.</p>
+        </div>
+        <div class="hero-illustration" aria-hidden="true">
+          <div class="circle c1"></div><div class="circle c2"></div>
+          <div class="bag">🎒</div><div class="tag">✓</div>
+        </div>
+      </div>
+
+      <div class="choice-grid">
+        <button class="choice-card" id="studentChoice">
+          <span class="choice-icon">🎒</span>
+          <span class="choice-title">Sou aluno</span>
+          <span class="choice-desc">Enviar um objeto encontrado ou procurar algo perdido.</span>
+          <span class="choice-link">Entrar na área do aluno <b>→</b></span>
+        </button>
+        <button class="choice-card director-card" id="directorChoice">
+          <span class="choice-icon">🛡️</span>
+          <span class="choice-title">Sou diretor</span>
+          <span class="choice-desc">Analisar envios, publicar objetos e conferir reclamações.</span>
+          <span class="choice-link">Entrar na área da direção <b>→</b></span>
+        </button>
+      </div>
+      <p class="privacy-note">🔒 As informações usadas para identificar o dono de um objeto devem ser vistas apenas pela direção.</p>
+    </section>
+
+    <section id="studentView" class="view hidden">
+      <div class="page-heading">
+        <span class="eyebrow">ÁREA DO ALUNO</span>
+        <h1>Como podemos ajudar?</h1>
+        <p>Você encontrou algo ou está procurando um objeto perdido?</p>
+      </div>
+      <div class="tabs">
+        <button class="tab active" data-tab="sendTab">📸 Encontrei um objeto</button>
+        <button class="tab" data-tab="galleryTab">🔎 Procurar objeto</button>
+      </div>
+
+      <div id="sendTab" class="tab-panel">
+        <div class="panel">
+          <h2>Registrar objeto encontrado</h2>
+          <p class="muted">Envie uma foto e conte onde o objeto foi encontrado. A direção vai analisar antes de publicar.</p>
+          <form id="foundForm">
+            <label for="foundPhoto">Foto do objeto</label>
+            <input id="foundPhoto" type="file" accept="image/*" capture="environment" required>
+            <div id="photoPreview" class="photo-preview hidden"></div>
+            <label for="foundDescription">Descrição simples</label>
+            <input id="foundDescription" maxlength="120" placeholder="Ex.: garrafa azul, estojo preto..." required>
+            <label for="foundPlace">Onde foi encontrado?</label>
+            <input id="foundPlace" maxlength="100" placeholder="Ex.: pátio, sala 4, biblioteca..." required>
+            <button class="primary-button" type="submit">Enviar para a direção</button>
+          </form>
+          <p class="small-note">Evite incluir rostos, documentos, nomes completos ou outras informações pessoais na foto.</p>
+        </div>
+      </div>
+
+      <div id="galleryTab" class="tab-panel hidden">
+        <div class="panel">
+          <div class="section-title-row">
+            <div><h2>Objetos publicados</h2><p class="muted">Confira se algum item é seu.</p></div>
+            <button id="refreshGallery" class="secondary-button">Atualizar</button>
+          </div>
+          <div id="publicGallery" class="item-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="directorLoginView" class="view hidden">
+      <div class="page-heading">
+        <span class="eyebrow">ACESSO RESTRITO</span>
+        <h1>Área da direção</h1>
+        <p>Entre com a conta autorizada pela escola.</p>
+      </div>
+      <div class="panel narrow">
+        <form id="loginForm">
+          <label for="directorEmail">E-mail autorizado</label>
+          <input id="directorEmail" type="email" autocomplete="username" placeholder="direcao@escola.com" required>
+          <label for="directorPassword">Senha</label>
+          <input id="directorPassword" type="password" autocomplete="current-password" required>
+          <button class="primary-button" type="submit">Entrar</button>
+          <p class="small-note">A conta da direção precisa ser criada previamente no Firebase Authentication. Não use uma senha compartilhada com alunos.</p>
+        </form>
+      </div>
+    </section>
+
+    <section id="directorView" class="view hidden">
+      <div class="page-heading">
+        <span class="eyebrow">PAINEL PRIVADO</span>
+        <div class="section-title-row heading-row">
+          <div><h1>Painel da direção</h1><p>Analise os envios e confira as solicitações de retirada.</p></div>
+          <button id="logoutButton" class="secondary-button">Sair</button>
+        </div>
+      </div>
+      <div class="tabs">
+        <button class="tab active" data-tab="pendingPanel">📥 Envios recebidos <span id="pendingCount" class="count">0</span></button>
+        <button class="tab" data-tab="claimsPanel">🔔 Reclamações <span id="claimsCount" class="count">0</span></button>
+        <button class="tab" data-tab="publishedPanel">🖼️ Publicados</button>
+      </div>
+      <div id="pendingPanel" class="tab-panel">
+        <div class="panel"><h2>Objetos aguardando análise</h2><div id="pendingList" class="item-grid"></div></div>
+      </div>
+      <div id="claimsPanel" class="tab-panel hidden">
+        <div class="panel"><h2>Solicitações de retirada</h2><p class="muted">Confirme a identidade com cuidado antes de entregar o objeto.</p><div id="claimsList" class="stack-list"></div></div>
+      </div>
+      <div id="publishedPanel" class="tab-panel hidden">
+        <div class="panel"><h2>Mural público</h2><div id="directorPublishedList" class="item-grid"></div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <strong>Achados e Conectados</strong>
+    <span>Um objeto encontrado pode ser uma grande conexão.</span>
+  </footer>
+
+  <dialog id="claimDialog">
+    <form id="claimForm" method="dialog">
+      <div class="dialog-head"><div><span class="eyebrow">RECLAMAR OBJETO</span><h2>Você reconhece este item?</h2></div><button type="button" class="close-button" id="closeClaim">×</button></div>
+      <p id="claimItemName" class="muted"></p>
+      <input id="claimItemId" type="hidden">
+      <label for="claimStudentName">Seu nome</label>
+      <input id="claimStudentName" maxlength="100" placeholder="Digite seu nome" required>
+      <label for="claimProof">Uma informação que só o dono saberia</label>
+      <textarea id="claimProof" maxlength="500" rows="3" placeholder="Ex.: um detalhe específico que não aparece na foto..." required></textarea>
+      <p class="small-note">Esta resposta é privada e será enviada apenas à direção. Não escreva senhas ou informações muito sensíveis.</p>
+      <button class="primary-button" type="submit">Enviar solicitação</button>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="app.js"></script>
+</body>
+  </html>
